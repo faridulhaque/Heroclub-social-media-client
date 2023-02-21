@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import RegisterFormModal from "./RegisterFormModal";
 
 const LoginForm = () => {
   return (
@@ -34,8 +35,14 @@ const LoginForm = () => {
           <div className="form-control mt-6">
             <button className="btn btn-secondary text-white">Login</button>
           </div>
+          <label className="label">
+              <span className="label-text-alt ">
+                Don't have an account? <label htmlFor="my-modal-5" className="link link-hover">Create one.</label>
+              </span>
+            </label>
         </div>
       </div>
+      <RegisterFormModal></RegisterFormModal>
     </div>
   );
 };
