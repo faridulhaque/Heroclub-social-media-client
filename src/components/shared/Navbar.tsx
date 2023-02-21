@@ -4,6 +4,12 @@ import { Link, useNavigate } from "react-router-dom";
 const Navbar = () => {
   const navigate = useNavigate();
 
+  const handleLogout = () =>{
+    localStorage.removeItem("token") 
+    localStorage.removeItem("user") 
+    navigate("/entry")
+  }
+
   return (
     <>
       <div className="navbar bg-secondary">
@@ -66,9 +72,9 @@ const Navbar = () => {
           </ul>
         </div>
         <div className="navbar-end">
-        <Link to="/" className="btn btn-secondary text-white">
+        <span onClick={handleLogout}  className="cursor-pointer text-white">
             Sign Out
-          </Link>
+          </span>
         </div>
       </div>
     </>

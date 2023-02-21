@@ -1,31 +1,81 @@
 import React, { useState } from "react";
+import { useRegisterMutation } from "../../../api/queries/authAPI";
+import Loading from "../../shared/Loading";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { RegisterModalTypes } from "../../../types/registerFormTypes";
 
-const RegisterFormModal = () => {
-  const [inputError, setInputError] = useState<String>("")
+const RegisterFormModal = ({
+  openModal,
+  setOpenModal,
+}: RegisterModalTypes): any => {
+  // const data = useRegisterMutation()
+  const [register, { isLoading, isError, error, data }] =
+    useRegisterMutation<any>();
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const [inputError, setInputError] = useState<String>("");
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const firstName = e.currentTarget.firstName.value;
     const lastName = e.currentTarget.lastName.value;
     const email = e.currentTarget.email.value;
     const password = e.currentTarget.password.value;
 
-
-    if(firstName === "" || lastName === "" || email === "" || password === ""){
-      return setInputError("Input fields should not be empty")
+    if (
+      firstName === "" ||
+      lastName === "" ||
+      email === "" ||
+      password === ""
+    ) {
+      return setInputError("Input fields should not be empty");
     }
 
-    const data = {
+    const user = {
       firstName,
       lastName,
       email,
       password,
     };
 
-    setInputError('')
-    console.log(inputError)
-    console.log(data)
+    setInputError("");
+
+    await register(user);
+    if (data._id) {
+      e.currentTarget.clear();
+    }
   };
+
+  if (isError) {
+    toast.error(error?.data?.message, {
+      position: "bottom-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      progress: undefined,
+      toastId: "error",
+    });
+  }
+
+  if (data?._id) {
+    toast.success(
+      "User has been successfully created!",
+      {
+        position: "bottom-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        progress: undefined,
+        toastId: "success",
+      }
+    );
+
+    setTimeout(()=>{
+      setOpenModal(false)
+    },4000)
+  }
 
   return (
     <>
@@ -84,27 +134,34 @@ const RegisterFormModal = () => {
             </div>
           </div>
           <div>
-            {
-              inputError && <p className="text-lg text-red-400 text-right mt-5">{inputError}</p>
-            }
+            {inputError && (
+              <p className="text-lg text-red-400 text-right mt-5">
+                {inputError}
+              </p>
+            )}
           </div>
-          <div className="modal-action">
-            <label
-              htmlFor="my-modal-5"
-              className="btn bg-red-400 hover:bg-red-400 border-none text-white"
-            >
-              Close
-            </label>
-            <button
-            type="submit"
-              // htmlFor="my-modal-5"
-              className="btn btn-secondary text-white"
-            >
-              Create account
-            </button>
-          </div>
+          {isLoading ? (
+            <Loading></Loading>
+          ) : (
+            <div className="modal-action">
+              <label
+                htmlFor="my-modal-5"
+                className="btn bg-red-400 hover:bg-red-400 border-none text-white"
+              >
+                Close
+              </label>
+              <button
+                type="submit"
+                // htmlFor="my-modal-5"
+                className="btn btn-secondary text-white"
+              >
+                Create account
+              </button>
+            </div>
+          )}
         </form>
       </div>
+      <ToastContainer></ToastContainer>
     </>
   );
 };
