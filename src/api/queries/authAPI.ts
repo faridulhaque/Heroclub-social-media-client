@@ -1,5 +1,6 @@
 import { apiSlice } from "../rootapi/apiSlice";
 
+
 const authApi = apiSlice.injectEndpoints({
   endpoints: (builder: any) => ({
     register: builder.mutation({
