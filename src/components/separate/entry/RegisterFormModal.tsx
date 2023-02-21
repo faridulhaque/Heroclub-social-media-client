@@ -81,13 +81,13 @@ const RegisterFormModal = ({
     <>
       <input type="checkbox" id="my-modal-5" className="modal-toggle" />
       <div className="modal">
-        <form onSubmit={handleSubmit} className="modal-box w-10/12 max-w-5xl">
+        <form onSubmit={handleSubmit} className="modal-box xl:w-1/4 lg:w-1/4 md:w-10/12 sm:w-10/12 xs:w-10/12 xxs:w-10/12 max-w-5xl">
           <h3 className="font-bold text-2xl text-center">
             Create an account at{" "}
             <span className="text-3xl text-secondary">HeroClub</span>
           </h3>
 
-          <div className="w-full grid xl:grid-cols-2 lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 xs:grid-cols-1 xxs:grid-cols-1 gap-y-4 gap-x-5">
+          <div className="w-full grid xl:grid-cols-1 lg:grid-cols-2 md:grid-cols-1 sm:grid-cols-1 xs:grid-cols-1 xxs:grid-cols-1 gap-y-4 gap-x-5">
             <div className="form-control">
               <label className="label">
                 <span className="label-text">First Name</span>
