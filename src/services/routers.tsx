@@ -12,9 +12,14 @@ const routers = createBrowserRouter([
       </RequireAuth>
     ),
   },
-  { path: "/", element: <RequireAuth>
-  <HomePage></HomePage>
-</RequireAuth> },
+  {
+    path: "/",
+    element: (
+      <RequireAuth>
+        <HomePage></HomePage>
+      </RequireAuth>
+    ),
+  },
   { path: "/entry", element: <EntryPage></EntryPage> },
 ]);
 
