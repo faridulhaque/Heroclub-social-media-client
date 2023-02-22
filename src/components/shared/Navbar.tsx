@@ -46,13 +46,13 @@ const Navbar = () => {
                 </li>
 
                 <li>
-                  <Link to="/">Profile</Link>
+                  <Link to={`/profile/${user?._id}`}>Profile</Link>
                 </li>
                 <li>
-                  <Link to="/">Notifications</Link>
+                  <span>Notifications</span>
                 </li>
                 <li>
-                  <Link to="/">Message</Link>
+                  <span>Message</span>
                 </li>
               </ul>
             </div>
@@ -70,13 +70,13 @@ const Navbar = () => {
                 </li>
 
                 <li>
-                  <Link to="/">Profile</Link>
+                  <Link to={`/profile/${user?._id}`}>Profile</Link>
                 </li>
                 <li>
-                  <Link to="/">Notifications</Link>
+                  <span>Notifications</span>
                 </li>
                 <li>
-                  <Link to="/">Message</Link>
+                  <span>Message</span>
                 </li>
               </ul>
             </div>

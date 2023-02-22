@@ -2,8 +2,18 @@ import { createBrowserRouter } from "react-router-dom";
 import RequireAuth from "../components/hoc/RequireAuth";
 import EntryPage from "../pages/EntryPage";
 import HomePage from "../pages/HomePage";
+import ProfilePage from "../pages/ProfilePage";
+import UpdateProfilePage from "../pages/UpdateProfilePage";
 
 const routers = createBrowserRouter([
+  {
+    path: "/",
+    element: (
+      <RequireAuth>
+        <HomePage></HomePage>
+      </RequireAuth>
+    ),
+  },
   {
     path: "/home",
     element: (
@@ -13,10 +23,18 @@ const routers = createBrowserRouter([
     ),
   },
   {
-    path: "/",
+    path: "/profile/:id",
     element: (
       <RequireAuth>
-        <HomePage></HomePage>
+        <ProfilePage></ProfilePage>
+      </RequireAuth>
+    ),
+  },
+  {
+    path: "/update_profile/:id",
+    element: (
+      <RequireAuth>
+        <UpdateProfilePage></UpdateProfilePage>
       </RequireAuth>
     ),
   },

@@ -15,3 +15,7 @@
 body{
   background-color: #F9FAFB;
 }
+
+::-webkit-scrollbar {
+  display: none;
+}
