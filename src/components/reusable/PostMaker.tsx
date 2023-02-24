@@ -2,6 +2,9 @@ import React from "react";
 import PostMakerModal from "./PostMakerModal";
 
 const PostMaker = () => {
+
+
+  
   return (
     <div className="w-full h-[100px] bg-white shadow-xl flex justify-around items-center">
       <div className="h-[80px] w-1.5/12">
