@@ -4,12 +4,16 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import {
+  useDeletePrevImageMutation,
   useGetLoggedInUserQuery,
   useUpdateProfileMutation,
 } from "../../api/queries/usersApi";
+// import useCloudinary from "../../hooks/useCloudinary";
 import Loading from "../shared/Loading";
 
 const UpdateProfileForm = (): any => {
+  // const {generateDeleteSignature} = useCloudinary()
+
   const [proPic, setProPic] = useState<any>(null);
   const { id } = useParams();
 
@@ -29,6 +33,8 @@ const UpdateProfileForm = (): any => {
       data: updatedUser,
     },
   ] = useUpdateProfileMutation<any>();
+
+  const [deletePrevImg, others] = useDeletePrevImageMutation();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -50,31 +56,45 @@ const UpdateProfileForm = (): any => {
     };
 
     if (proPic?.name) {
+      // generate a  new picture path from cloudinry.
       const file = new FormData();
 
       file.append("file", proPic);
       file.append("upload_preset", "heroclub");
 
-      const response = await fetch(
-        "https://api.cloudinary.com/v1_1/dfmdacf6w/image/upload",
-        {
-          method: "POST",
-          body: file,
-        }
-      );
-      const data = await response.json();
+      const pictureInfo = await uploadImage(file);
 
       const profileInfoWithImg = {
         ...profileInfo,
-        picturePath: data.secure_url,
-        picturePublicId: data.public_id,
+        ...pictureInfo,
       };
 
-      updateProfile(profileInfoWithImg);
+      await updateProfile(profileInfoWithImg);
+
+      deletePrevImg({ public_id: user.picturePublicId });
     } else {
       updateProfile(profileInfo);
     }
   };
+
+  // upload image to cloudinary
+  const uploadImage = async (file: any) => {
+    const response = await fetch(
+      "https://api.cloudinary.com/v1_1/dfmdacf6w/image/upload",
+      {
+        method: "POST",
+        body: file,
+      }
+    );
+    const data = await response.json();
+    // console.log(data)
+    return {
+      picturePath: data.secure_url,
+      picturePublicId: data.public_id,
+    };
+  };
+
+  // upload image to cloudinary ended
 
   if (userLoading) {
     return <Loading></Loading>;
@@ -100,7 +120,7 @@ const UpdateProfileForm = (): any => {
     <div className="xl:w-2/4 lg:w-2/4 md:w-full sm:w-full xs:w-full xxs:w-full mx-auto mt-10 h-[90vh]">
       <form
         onSubmit={handleSubmit}
-        className="w-11/12 mx-auto bg-white pb-10 shadow-sm h-full overflow-x-scroll"
+        className="w-11/12 mx-auto bg-white pb-10 shadow-sm h-[85vh] overflow-x-scroll"
       >
         <div className="h-[200px] w-full bg-secondary relative">
           <img
@@ -133,18 +153,6 @@ const UpdateProfileForm = (): any => {
 
           <div className="form-control mt-5 xl:w-3/4 lg:w-3/4 md:w-11/12 sm:w-11/12 xs:w-11/12 xxs:w-11/12 mx-auto">
             <label className="label">
-              <span className="label-text">Profile picture</span>
-            </label>
-            <input
-              onChange={(e: any) => setProPic(e.target.files[0])}
-              type="file"
-              placeholder="Upload image"
-              className="input input-bordered"
-            />
-          </div>
-
-          <div className="form-control mt-5 xl:w-3/4 lg:w-3/4 md:w-11/12 sm:w-11/12 xs:w-11/12 xxs:w-11/12 mx-auto">
-            <label className="label">
               <span className="label-text">Last Name</span>
             </label>
             <input
@@ -153,8 +161,19 @@ const UpdateProfileForm = (): any => {
               placeholder="Last Name"
               className="input input-bordered"
               defaultValue={
-                updatedUser?.lastName ? updatedUser.lastName : user.lastName
+                updatedUser?.lastName ? updatedUser?.lastName : user?.lastName
               }
+            />
+          </div>
+
+          <div className="form-control mt-5 xl:w-3/4 lg:w-3/4 md:w-11/12 sm:w-11/12 xs:w-11/12 xxs:w-11/12 mx-auto">
+            <label className="label">
+              <span className="label-text">Profile picture</span>
+            </label>
+            <input
+              onChange={(e: any) => setProPic(e.target.files[0])}
+              type="file"
+              className="file-input"
             />
           </div>
 
@@ -166,6 +185,11 @@ const UpdateProfileForm = (): any => {
               name="birthDate"
               type="date"
               className="input input-bordered"
+              defaultValue={
+                updatedUser?.birthDate
+                  ? updatedUser?.birthDate
+                  : user?.birthDate
+              }
             />
           </div>
 

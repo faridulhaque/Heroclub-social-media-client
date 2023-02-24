@@ -28,7 +28,17 @@ const usersApi = apiSlice.injectEndpoints({
         },
       }),
     }),
+
+    // delete previous profile picture after update the profile
+    deletePrevImage: builder.mutation({
+      query: (data: any) => ({
+        url: `/users/del_prev`,
+        method: "POST",
+
+        body: data,
+      }),
+    }),
   }),
 });
 
-export const { useUpdateProfileMutation, useGetLoggedInUserQuery } = usersApi;
+export const { useUpdateProfileMutation, useGetLoggedInUserQuery, useDeletePrevImageMutation } = usersApi;
