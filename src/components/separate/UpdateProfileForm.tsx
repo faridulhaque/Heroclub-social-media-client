@@ -1,7 +1,34 @@
 import React, { useState } from "react";
+import { useParams } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-const UpdateProfileForm = () => {
+import {
+  useGetLoggedInUserQuery,
+  useUpdateProfileMutation,
+} from "../../api/queries/usersApi";
+import Loading from "../shared/Loading";
+
+const UpdateProfileForm = (): any => {
   const [proPic, setProPic] = useState<any>(null);
+  const { id } = useParams();
+
+  const {
+    isLoading: userLoading,
+    isError: isUserError,
+    error: userError,
+    data: user,
+  } = useGetLoggedInUserQuery<any>(id);
+
+  const [
+    updateProfile,
+    {
+      isLoading: updating,
+      isError: isUpdateError,
+      error: updateError,
+      data: updatedUser,
+    },
+  ] = useUpdateProfileMutation<any>();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -11,6 +38,7 @@ const UpdateProfileForm = () => {
     const birthDate = e.currentTarget.birthDate.value;
     const currentCity = e.currentTarget.currentCity.value;
     const homeTown = e.currentTarget.homeTown.value;
+    const _id = id;
 
     const profileInfo = {
       firstName,
@@ -18,6 +46,7 @@ const UpdateProfileForm = () => {
       birthDate,
       currentCity,
       homeTown,
+      _id,
     };
 
     if (proPic?.name) {
@@ -41,11 +70,31 @@ const UpdateProfileForm = () => {
         picturePublicId: data.public_id,
       };
 
-      console.log(profileInfoWithImg);
+      updateProfile(profileInfoWithImg);
     } else {
-      console.log(profileInfo);
+      updateProfile(profileInfo);
     }
   };
+
+  if (userLoading) {
+    return <Loading></Loading>;
+  }
+
+  if (isUserError || isUpdateError) {
+    console.log(userError || updateError);
+  }
+
+  if (updatedUser?._id) {
+    toast.success("Your profile has been updated", {
+      position: "bottom-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      progress: undefined,
+      toastId: "success",
+    });
+  }
 
   return (
     <div className="xl:w-2/4 lg:w-2/4 md:w-full sm:w-full xs:w-full xxs:w-full mx-auto mt-10 h-[90vh]">
@@ -55,7 +104,11 @@ const UpdateProfileForm = () => {
       >
         <div className="h-[200px] w-full bg-secondary relative">
           <img
-            src="https://i.ibb.co/6YK1cXs/avatar.jpg"
+            src={
+              updatedUser?.picturePath
+                ? updatedUser?.picturePath
+                : user?.picturePath
+            }
             alt=""
             className="w-[200px] h-[200px] border-secondary-1 absolute mx-auto left-0 right-0 top-[50px]"
           />
@@ -70,6 +123,11 @@ const UpdateProfileForm = () => {
               type="text"
               placeholder="First Name"
               className="input input-bordered"
+              defaultValue={
+                updatedUser?.firstName
+                  ? updatedUser?.firstName
+                  : user?.firstName
+              }
             />
           </div>
 
@@ -94,6 +152,9 @@ const UpdateProfileForm = () => {
               type="text"
               placeholder="Last Name"
               className="input input-bordered"
+              defaultValue={
+                updatedUser?.lastName ? updatedUser.lastName : user.lastName
+              }
             />
           </div>
 
@@ -112,7 +173,12 @@ const UpdateProfileForm = () => {
             <label className="label">
               <span className="label-text">Email</span>
             </label>
-            <input type="text" className="input input-bordered" disabled />
+            <input
+              type="text"
+              className="input input-bordered"
+              disabled
+              defaultValue={user?.email}
+            />
           </div>
 
           <div className="form-control mt-5 xl:w-3/4 lg:w-3/4 md:w-11/12 sm:w-11/12 xs:w-11/12 xxs:w-11/12 mx-auto">
@@ -124,6 +190,11 @@ const UpdateProfileForm = () => {
               name="currentCity"
               type="text"
               placeholder="Current City"
+              defaultValue={
+                updatedUser?.currentCity
+                  ? updatedUser?.currentCity
+                  : user?.currentCity
+              }
             />
           </div>
 
@@ -136,19 +207,29 @@ const UpdateProfileForm = () => {
               name="homeTown"
               type="text"
               placeholder="Home Town"
+              defaultValue={
+                updatedUser?.homeTown ? updatedUser?.homeTown : user?.homeTown
+              }
             />
           </div>
 
-          <div className="mt-5 xl:w-3/4 lg:w-3/4 md:w-11/12 sm:w-11/12 xs:w-11/12 xxs:w-11/12 mx-auto">
-            <button
-              className="w-full block btn btn-secondary text-white"
-              type="submit"
-            >
-              Update
-            </button>
-          </div>
+          {updating ? (
+            <Loading></Loading>
+          ) : (
+            <>
+              <div className="mt-5 xl:w-3/4 lg:w-3/4 md:w-11/12 sm:w-11/12 xs:w-11/12 xxs:w-11/12 mx-auto">
+                <button
+                  className="w-full block btn btn-secondary text-white"
+                  type="submit"
+                >
+                  Update
+                </button>
+              </div>
+            </>
+          )}
         </div>
       </form>
+      <ToastContainer></ToastContainer>
     </div>
   );
 };
