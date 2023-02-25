@@ -5,7 +5,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 import {
   useDeletePrevImageMutation,
-  useGetLoggedInUserQuery,
+  useGetSpecificUserQuery,
   useUpdateProfileMutation,
 } from "../../api/queries/usersApi";
 // import useCloudinary from "../../hooks/useCloudinary";
@@ -22,7 +22,7 @@ const UpdateProfileForm = (): any => {
     isError: isUserError,
     error: userError,
     data: user,
-  } = useGetLoggedInUserQuery<any>(id);
+  } = useGetSpecificUserQuery<any>(id);
 
   const [
     updateProfile,

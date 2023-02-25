@@ -17,7 +17,7 @@ const usersApi = apiSlice.injectEndpoints({
     }),
     // get loggedIn user information
 
-    getLoggedInUser: builder.query({
+    getSpecificUser: builder.query({
       query: (id: any) => ({
         url: `/users/${id}`,
         method: "GET",
@@ -41,4 +41,4 @@ const usersApi = apiSlice.injectEndpoints({
   }),
 });
 
-export const { useUpdateProfileMutation, useGetLoggedInUserQuery, useDeletePrevImageMutation } = usersApi;
+export const { useUpdateProfileMutation, useGetSpecificUserQuery, useDeletePrevImageMutation } = usersApi;

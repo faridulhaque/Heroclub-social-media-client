@@ -1,7 +1,8 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
+import Loading from "./Loading";
 
-const Navbar = () => {
+const Navbar = ():any => {
   const navigate = useNavigate();
 
   let user = JSON.parse(localStorage.getItem("user") || "null");
@@ -11,6 +12,8 @@ const Navbar = () => {
     localStorage.removeItem("user");
     navigate("/entry");
   };
+
+ 
 
   return (
     <>

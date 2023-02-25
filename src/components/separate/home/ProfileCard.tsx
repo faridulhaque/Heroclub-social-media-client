@@ -1,12 +1,17 @@
 import React from "react";
+type userBasic = {
+  firstName: string,
+  lastName: string,
+  picturePath: string
+}
 
-const ProfileCard = () => {
+const ProfileCard = ({firstName, lastName, picturePath}:userBasic) => {
   return (
     <div className="xl:block lg:block md:hidden sm:hidden xs:hidden xxs:hidden w-[24%] h-2/4 bg-white shadow-xl">
       <div className="w-full h-20 bg-secondary relative">
         <div className="h-[100px] w-1/4 absolute left-0 right-0 m-auto top-7">
           <img
-            src="https://i.ibb.co/6YK1cXs/avatar.jpg"
+            src={picturePath}
             alt=""
             className="w-full h-full rounded-full"
           />
@@ -14,8 +19,8 @@ const ProfileCard = () => {
       </div>
 
       <div className="mt-20">
-        <p className="text-center text-2xl">Full Name</p>
-        <p className="text-center text-md">hello how are you</p>
+        <p className="text-center text-2xl capitalize">{firstName} {lastName}</p>
+        {/* <p className="text-center text-md">hello how are you</p> */}
       </div>
       <div className="w-10/12 mx-auto h-1 bg-secondary mt-5"></div>
       <div className="mt-5">

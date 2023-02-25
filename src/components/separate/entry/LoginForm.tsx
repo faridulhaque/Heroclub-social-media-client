@@ -33,10 +33,11 @@ const LoginForm = () => {
 
   React.useEffect(() => {
     let user = JSON.parse(localStorage.getItem("user") || "null");
-    if(user?._id){
+    let token = JSON.parse(localStorage.getItem("token") || "null")
+    if(user?._id && token){
       navigate("/")
     }
-  }, [userInfo]);
+  }, [userInfo, navigate]);
 
   if (isError) {
     toast.error(error?.data?.message, {
@@ -51,8 +52,8 @@ const LoginForm = () => {
   }
 
   if (userInfo?.token) {
-    window.localStorage.setItem("token", JSON.stringify(userInfo.token));
-    window.localStorage.setItem("user", JSON.stringify(userInfo.loggedInUser));
+    localStorage.setItem("token", JSON.stringify(userInfo.token));
+    localStorage.setItem("user", JSON.stringify(userInfo.loggedInUser));
   }
 
   return (
