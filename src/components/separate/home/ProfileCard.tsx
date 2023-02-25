@@ -1,13 +1,17 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 type userBasic = {
   firstName: string,
   lastName: string,
   picturePath: string
+  _id: string
 }
 
-const ProfileCard = ({firstName, lastName, picturePath}:userBasic) => {
+const ProfileCard = ({firstName, lastName, picturePath, _id}:userBasic) => {
+
+  const navigate = useNavigate()
   return (
-    <div className="xl:block lg:block md:hidden sm:hidden xs:hidden xxs:hidden w-[24%] h-2/4 bg-white shadow-xl">
+    <div className="xl:block lg:block md:hidden sm:hidden xs:hidden xxs:hidden w-[24%] h-auto bg-white shadow-sm">
       <div className="w-full h-20 bg-secondary relative">
         <div className="h-[100px] w-1/4 absolute left-0 right-0 m-auto top-7">
           <img
@@ -31,7 +35,7 @@ const ProfileCard = ({firstName, lastName, picturePath}:userBasic) => {
 
       </div>
 
-      <button className="mt-10 mx-auto w-2/4 text-secondary block link-hover">View Profile</button>
+      <button onClick={()=>navigate(`/profile/${_id}`)} className="mt-10 mx-auto w-2/4 text-secondary block link-hover">View Profile</button>
 
     </div>
   );

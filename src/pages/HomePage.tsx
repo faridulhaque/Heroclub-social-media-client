@@ -8,7 +8,7 @@ const HomePage = () => {
         <div className="h-screen">
          <Navbar></Navbar> 
          <HomeBody></HomeBody>
-         <BelowSpace></BelowSpace>
+         {/* <BelowSpace></BelowSpace> */}
 
         </div>
     );

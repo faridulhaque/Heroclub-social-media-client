@@ -5,8 +5,32 @@ const postsApi = apiSlice.injectEndpoints({
   endpoints: (builder: any) => ({
     userPosts: builder.query({
       query: (id: String) => ({
-        url: `posts/all/${id}`,
+        url: `/posts/all/${id}`,
         method: "GET",
+        headers: {
+          Authorization: `Bearer ${JSON.parse(
+            localStorage.getItem("token") || "null"
+          )}`,
+        },
+      }),
+    }),
+
+    allPosts: builder.query({
+      query: () => ({
+        url: `/posts/all`,
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${JSON.parse(
+            localStorage.getItem("token") || "null"
+          )}`,
+        },
+      }),
+    }),
+
+    deletePost: builder.mutation({
+      query: (id: String) => ({
+        url: `/posts/${id}`,
+        method: "DELETE",
         headers: {
           Authorization: `Bearer ${JSON.parse(
             localStorage.getItem("token") || "null"
@@ -17,4 +41,4 @@ const postsApi = apiSlice.injectEndpoints({
   }),
 });
 
-export const {useUserPostsQuery} = postsApi;
+export const {useUserPostsQuery, useDeletePostMutation, useAllPostsQuery} = postsApi;

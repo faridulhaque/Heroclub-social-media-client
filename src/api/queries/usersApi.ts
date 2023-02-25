@@ -29,6 +29,32 @@ const usersApi = apiSlice.injectEndpoints({
       }),
     }),
 
+    // get all user for friend suggestion
+    getAllUser: builder.query({
+      query: () => ({
+        url: `/users/all`,
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${JSON.parse(
+            localStorage.getItem("token") || "null"
+          )}`,
+        },
+      }),
+    }),
+
+    // get the friends list
+    friendList: builder.query({
+      query: (id:string) => ({
+        url: `/users/${id}/friends`,
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${JSON.parse(
+            localStorage.getItem("token") || "null"
+          )}`,
+        },
+      }),
+    }),
+
     // delete previous profile picture after update the profile
     deletePrevImage: builder.mutation({
       query: (data: any) => ({
@@ -38,7 +64,29 @@ const usersApi = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
+
+    // add or delete followers/friends
+    addOrRemoveFriend: builder.mutation({
+      query: (data: any) => ({
+        url: `/users/${data.id}/${data.friendId}`,
+        method: "PATCH",
+        headers: {
+          Authorization: `Bearer ${JSON.parse(
+            localStorage.getItem("token") || "null"
+          )}`,
+        },
+
+        body: data,
+      }),
+    }),
   }),
 });
 
-export const { useUpdateProfileMutation, useGetSpecificUserQuery, useDeletePrevImageMutation } = usersApi;
+export const {
+  useUpdateProfileMutation,
+  useGetSpecificUserQuery,
+  useDeletePrevImageMutation,
+  useGetAllUserQuery,
+  useAddOrRemoveFriendMutation,
+  useFriendListQuery,
+} = usersApi;

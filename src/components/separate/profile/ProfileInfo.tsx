@@ -11,7 +11,7 @@ const ProfileInfo = ({user}:any) => {
   const {firstName, lastName, email, currentCity, homeTown, picturePath} = user;
 
   return (
-    <div className=" xl:w-[24%] lg:w-[24%] md:w-full sm:w-full xs:w-full xss:w-full xl:h-auto lg:h-auto md:h-auto sm:h-auto xs:h-auto xss:h-auto bg-white shadow-xl xl:w-mb-none pb-10">
+    <div className=" xl:w-[24%] lg:w-[24%] md:w-full sm:w-full xs:w-full xss:w-full xl:h-auto lg:h-auto md:h-auto sm:h-auto xs:h-auto xss:h-auto bg-white shadow-sm xl:w-mb-none pb-10">
       <div className="w-full h-20 bg-secondary relative">
         <div className="h-[100px] w-1/4 absolute left-0 right-0 m-auto top-7">
           <img

@@ -29,9 +29,10 @@ const HomeBody = () => {
         firstName={user?.firstName}
         lastName={user?.lastName}
         picturePath={user?.picturePath}
+        _id={user?._id}
       ></ProfileCard>
       <FeedContainer user={user}></FeedContainer>
-      <HomeRight></HomeRight>
+      <HomeRight userId={user._id}></HomeRight>
     </div>
   );
 };

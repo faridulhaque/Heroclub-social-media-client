@@ -76,6 +76,9 @@ const PostMakerModal = ():any => {
       progress: undefined,
       toastId: "success",
     });
+    setTimeout(()=>{
+      window.location.reload()
+    }, 3000)
   }
 
   return (

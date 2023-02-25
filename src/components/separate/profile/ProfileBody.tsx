@@ -4,6 +4,7 @@ import { useGetSpecificUserQuery } from '../../../api/queries/usersApi';
 import Loading from '../../shared/Loading';
 import FeedContainer from '../home/FeedContainer';
 import HomeRight from '../home/HomeRight';
+import FriendsList from './FriendsList';
 import ProfileInfo from './ProfileInfo';
 
 const ProfileBody = () => {
@@ -30,7 +31,7 @@ const ProfileBody = () => {
         <div className="w-11/12 mx-auto mt-10 h-[85vh] flex xl:flex-row lg:flex-row md:flex-col sm:flex-col xs:flex-col xxs:flex-col justify-between">
             <ProfileInfo user={user}></ProfileInfo>
             <FeedContainer user={user}></FeedContainer>
-            <HomeRight></HomeRight>
+            <FriendsList id={user._id}></FriendsList>
         </div>
     );
 };
