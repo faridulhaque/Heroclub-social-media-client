@@ -73,6 +73,7 @@ const UpdateProfileForm = (): any => {
 
       deletePrevImg({ public_id: user.picturePublicId });
     } else {
+      console.log(profileInfo)
       updateProfile(profileInfo);
     }
   };

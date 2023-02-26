@@ -32,7 +32,7 @@ const HomeBody = () => {
         _id={user?._id}
       ></ProfileCard>
       <FeedContainer user={user}></FeedContainer>
-      <HomeRight userId={user._id}></HomeRight>
+      <HomeRight userId={user?._id}></HomeRight>
     </div>
   );
 };

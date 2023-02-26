@@ -1,4 +1,6 @@
 import React from "react";
+import { AiOutlineBell, AiOutlineHome, AiOutlineMessage, AiOutlineUser } from "react-icons/ai";
+import { RiShutDownLine } from "react-icons/ri";
 import { Link, useNavigate } from "react-router-dom";
 import Loading from "./Loading";
 
@@ -68,18 +70,18 @@ const Navbar = ():any => {
           <>
             <div className="navbar-center hidden lg:flex text-white">
               <ul className="menu menu-horizontal px-1">
-                <li>
-                  <Link to="/">Home</Link>
+              <li>
+                  <Link to="/"><AiOutlineHome className="text-2xl"></AiOutlineHome></Link>
                 </li>
 
                 <li>
-                  <Link to={`/profile/${user?._id}`}>Profile</Link>
+                  <Link to={`/profile/${user?._id}`}><AiOutlineUser className="text-2xl"></AiOutlineUser></Link>
                 </li>
                 <li>
-                  <span>Notifications</span>
+                  <span><AiOutlineBell className="text-2xl"></AiOutlineBell></span>
                 </li>
                 <li>
-                  <span>Message</span>
+                  <span><AiOutlineMessage className="text-2xl"></AiOutlineMessage></span>
                 </li>
               </ul>
             </div>
@@ -88,7 +90,7 @@ const Navbar = ():any => {
                 onClick={handleLogout}
                 className="cursor-pointer text-white"
               >
-                Sign Out
+              <RiShutDownLine className="text-2xl mr-5"/>
               </span>
             </div>
           </>

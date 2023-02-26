@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   useDeletePrevImageMutation,
   useGetSpecificUserQuery,
@@ -8,9 +8,34 @@ import { Confirm } from "react-st-modal";
 import { useDeletePostMutation } from "../../api/queries/postsApi";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useLocation } from "react-router-dom";
+import { AiOutlineDelete } from "react-icons/ai";
+import {
+  useActionCommentMutation,
+  useActionLikeMutation,
+} from "../../api/queries/postAPI";
+import AllComments from "./AllComments";
 
-const PostPaper = ({ post, home }: any) => {
-  const { description, userId, picturePath, picturePublicId } = post;
+const PostPaper = ({ post }: any) => {
+  const { pathname } = useLocation();
+  const { description, userId, picturePath, picturePublicId, _id } = post;
+  const [openCommentBox, setOpenCommentBox] = useState(false);
+  const [comment, setComment] = useState("");
+
+  const [
+    action,
+    { isLoading: liking, isError: isLikeError, error: likeError, data: liked },
+  ] = useActionLikeMutation<any>();
+
+  const [
+    actionComment,
+    {
+      isLoading: commenting,
+      isError: isCommentError,
+      error: commentError,
+      data: resComment,
+    },
+  ] = useActionCommentMutation<any>();
 
   const {
     isLoading: userLoading,
@@ -66,10 +91,12 @@ const PostPaper = ({ post, home }: any) => {
       progress: undefined,
       toastId: "success",
     });
-    setTimeout(()=>{
-      window.location.reload()
-    }, 3000)
+    setTimeout(() => {
+      window.location.reload();
+    }, 3000);
   }
+
+  const isLiked = post?.likes[userId];
 
   return (
     <div className="w-full h-auto py-10px bg-white mt-5 shadow-sm">
@@ -89,17 +116,17 @@ const PostPaper = ({ post, home }: any) => {
             </p>
           </div>
         )}
-    {
-      !home &&     <div>
-      <span className="mr-2">Edit</span>
-      <span
-        className="cursor-pointer"
-        onClick={() => handleDeletePost(post?._id)}
-      >
-        Delete
-      </span>
-    </div>
-    }
+        {pathname.includes("profile") && (
+          <div>
+            {/* <span className="mr-2">Edit</span> */}
+            <span
+              className="cursor-pointer"
+              onClick={() => handleDeletePost(post?._id)}
+            >
+              <AiOutlineDelete className="text-secondary text-2xl"></AiOutlineDelete>
+            </span>
+          </div>
+        )}
       </div>
       <div className="w-11/12 mx-auto mt-5 pb-10">
         <p className="w-full text-lg text-justify">
@@ -119,6 +146,43 @@ const PostPaper = ({ post, home }: any) => {
           </div>
         )}
       </div>
+      <div className="h-10 bg-base-200 w-full flex">
+        <div
+          onClick={() => action({ userId, postId: _id })}
+          className={`w-2/4 h-full flex items-center justify-center cursor-pointer ${
+            !isLiked ? "text-black" : "text-blue-400"
+          }`}
+        >
+          {isLiked ? "Liked" : "Like"}
+        </div>
+
+        <div
+          onClick={() => setOpenCommentBox(!openCommentBox)}
+          className="w-2/4 h-full flex items-center justify-center cursor-pointer"
+        >
+          Comment
+        </div>
+      </div>
+      {openCommentBox && (
+        <>
+          <AllComments postId={_id}></AllComments>
+          <div className="w-full h-20 flex items-center">
+            <textarea
+              onBlur={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
+                setComment(e.target.value)
+              }
+              placeholder="Add comment here"
+              className="textarea textarea-bordered textarea-xs w-10/12 resize-none mt-5"
+            ></textarea>{" "}
+            <button
+              onClick={() => actionComment({ comment, userId, postId: _id })}
+              className="ml-2 btn btn-secondary text-white h-[40px] mt-5"
+            >
+              Add
+            </button>
+          </div>
+        </>
+      )}
     </div>
   );
 };
