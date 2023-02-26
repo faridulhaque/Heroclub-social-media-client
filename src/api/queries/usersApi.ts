@@ -41,6 +41,18 @@ const usersApi = apiSlice.injectEndpoints({
         },
       }),
     }),
+    // get friend suggestion
+    friendSuggestion: builder.query({
+      query: (id: string) =>({
+        url: `/users/suggestion/${id}`,
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${JSON.parse(
+            localStorage.getItem("token") || "null"
+          )}`,
+        },
+      }),
+    }),
 
     // get the friends list
     friendList: builder.query({
@@ -89,4 +101,5 @@ export const {
   useGetAllUserQuery,
   useAddOrRemoveFriendMutation,
   useFriendListQuery,
+  useFriendSuggestionQuery
 } = usersApi;

@@ -1,6 +1,7 @@
 import React from "react";
 import {
   useAddOrRemoveFriendMutation,
+  useFriendSuggestionQuery,
   useGetAllUserQuery,
 } from "../../../api/queries/usersApi";
 import Loading from "../../shared/Loading";
@@ -12,7 +13,7 @@ const HomeRight = ({ userId }: any) => {
     isError: isSError,
     error: sError,
     data:allUsers,
-  } = useGetAllUserQuery<any>(null);
+  } = useFriendSuggestionQuery<any>(userId);
 
   const [
     actionFriend,
@@ -42,7 +43,7 @@ const HomeRight = ({ userId }: any) => {
   return (
     <div className="xl:block lg:block md:hidden sm:hidden xs:hidden xxs:hidden w-[24%] h-full overflow-x-scroll">
       <p className="w-11/12 mx-auto mb-5">Suggestion for you</p>
-      {suggestion.map((s: any) => (
+      {suggestion?.map((s: any) => (
         <div
           key={s._id}
           className="w-11/12 mx-auto h-[60px] bg-white shadow-sm flex items-center justify-around mb-3"

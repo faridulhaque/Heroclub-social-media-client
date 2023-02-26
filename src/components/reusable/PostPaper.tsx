@@ -9,7 +9,7 @@ import { useDeletePostMutation } from "../../api/queries/postsApi";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const PostPaper = ({ post }: any) => {
+const PostPaper = ({ post, home }: any) => {
   const { description, userId, picturePath, picturePublicId } = post;
 
   const {
@@ -89,15 +89,17 @@ const PostPaper = ({ post }: any) => {
             </p>
           </div>
         )}
-        <div>
-          <span className="mr-2">Edit</span>
-          <span
-            className="cursor-pointer"
-            onClick={() => handleDeletePost(post?._id)}
-          >
-            Delete
-          </span>
-        </div>
+    {
+      !home &&     <div>
+      <span className="mr-2">Edit</span>
+      <span
+        className="cursor-pointer"
+        onClick={() => handleDeletePost(post?._id)}
+      >
+        Delete
+      </span>
+    </div>
+    }
       </div>
       <div className="w-11/12 mx-auto mt-5 pb-10">
         <p className="w-full text-lg text-justify">

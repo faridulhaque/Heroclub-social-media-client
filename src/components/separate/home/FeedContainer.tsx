@@ -47,7 +47,7 @@ const FeedContainer = ({ user, home = true }: any) => {
       <PostMaker user={user}></PostMaker>
       {/* ----------------- */}
       {posts?.map((post: any) => (
-        <PostPaper key={post._id} post={post}></PostPaper>
+        <PostPaper key={post._id} post={post} home={home}></PostPaper>
       ))}
     </div>
   );
