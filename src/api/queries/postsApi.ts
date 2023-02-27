@@ -16,8 +16,8 @@ const postsApi = apiSlice.injectEndpoints({
     }),
 
     allPosts: builder.query({
-      query: () => ({
-        url: `/posts/all`,
+      query: (id:String) => ({
+        url: `/posts/feed/${id}`,
         method: "GET",
         headers: {
           Authorization: `Bearer ${JSON.parse(
@@ -25,6 +25,7 @@ const postsApi = apiSlice.injectEndpoints({
           )}`,
         },
       }),
+      providesTags: ['feedPosts']
     }),
 
     deletePost: builder.mutation({

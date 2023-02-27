@@ -18,7 +18,9 @@ import AllComments from "./AllComments";
 
 const PostPaper = ({ post }: any) => {
   const { pathname } = useLocation();
-  const { description, userId, picturePath, picturePublicId, _id } = post;
+  let loggedInUser = JSON.parse(localStorage.getItem('user') || "null");
+  const loggedInUserId = loggedInUser?._id
+  const { description, picturePath, picturePublicId, _id, userId } = post;
   const [openCommentBox, setOpenCommentBox] = useState(false);
   const [comment, setComment] = useState("");
 
@@ -96,7 +98,7 @@ const PostPaper = ({ post }: any) => {
     }, 3000);
   }
 
-  const isLiked = post?.likes[userId];
+  const isLiked = post?.likes[loggedInUserId];
 
   return (
     <div className="w-full h-auto py-10px bg-white mt-5 shadow-sm">
@@ -148,7 +150,7 @@ const PostPaper = ({ post }: any) => {
       </div>
       <div className="h-10 bg-base-200 w-full flex">
         <div
-          onClick={() => action({ userId, postId: _id })}
+          onClick={() => action({ loggedInUserId, postId: _id })}
           className={`w-2/4 h-full flex items-center justify-center cursor-pointer ${
             !isLiked ? "text-black" : "text-blue-400"
           }`}
@@ -175,7 +177,7 @@ const PostPaper = ({ post }: any) => {
               className="textarea textarea-bordered textarea-xs w-10/12 resize-none mt-5"
             ></textarea>{" "}
             <button
-              onClick={() => actionComment({ comment, userId, postId: _id })}
+              onClick={() => actionComment({ comment, userId:loggedInUserId, postId: _id })}
               className="ml-2 btn btn-secondary text-white h-[40px] mt-5"
             >
               Add

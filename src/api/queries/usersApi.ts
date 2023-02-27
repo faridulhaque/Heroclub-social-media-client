@@ -14,6 +14,7 @@ const usersApi = apiSlice.injectEndpoints({
         },
         body: data,
       }),
+      providesTags: ["update_profile"],
     }),
     // get loggedIn user information
 
@@ -27,6 +28,7 @@ const usersApi = apiSlice.injectEndpoints({
           )}`,
         },
       }),
+      invalidatesTags: ["update_profile"],
     }),
 
     // get all user for friend suggestion
@@ -43,7 +45,7 @@ const usersApi = apiSlice.injectEndpoints({
     }),
     // get friend suggestion
     friendSuggestion: builder.query({
-      query: (id: string) =>({
+      query: (id: string) => ({
         url: `/users/suggestion/${id}`,
         method: "GET",
         headers: {
@@ -52,11 +54,13 @@ const usersApi = apiSlice.injectEndpoints({
           )}`,
         },
       }),
+      providesTags: ["suggestion"],
+
     }),
 
     // get the friends list
     friendList: builder.query({
-      query: (id:string) => ({
+      query: (id: string) => ({
         url: `/users/${id}/friends`,
         method: "GET",
         headers: {
@@ -65,6 +69,7 @@ const usersApi = apiSlice.injectEndpoints({
           )}`,
         },
       }),
+      providesTags: ["friend"],
     }),
 
     // delete previous profile picture after update the profile
@@ -90,6 +95,8 @@ const usersApi = apiSlice.injectEndpoints({
 
         body: data,
       }),
+      invalidatesTags: ["friend", "suggestion", 'feedPosts'],
+
     }),
   }),
 });
@@ -101,5 +108,5 @@ export const {
   useGetAllUserQuery,
   useAddOrRemoveFriendMutation,
   useFriendListQuery,
-  useFriendSuggestionQuery
+  useFriendSuggestionQuery,
 } = usersApi;

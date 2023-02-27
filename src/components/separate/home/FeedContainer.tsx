@@ -10,6 +10,7 @@ import Loading from "../../shared/Loading";
 
 const FeedContainer = ({ user }: any) => {
   const { pathname } = useLocation();
+
   const {
     isLoading: ppLoading,
     isError: isPpError,
@@ -21,7 +22,7 @@ const FeedContainer = ({ user }: any) => {
     isError: isFpError,
     error: fpError,
     data: feedPosts,
-  } = useAllPostsQuery<any>(null);
+  } = useAllPostsQuery<any>(user?._id);
 
   if (pathname.includes("home")) {
     if (fpLoading) {
@@ -41,12 +42,15 @@ const FeedContainer = ({ user }: any) => {
     }
   }
 
-  let posts = pathname === '/' ? feedPosts : personalPosts;
+  let posts = pathname === "/" ? feedPosts : personalPosts;
 
   return (
     <div className="xl:w-[50%] lg::w-[50%] md::w-full sm::w-full xs::w-full xss:w-full h-full overflow-y-scroll xl:mt-0 lg:mt-0 md:mt-10 sm:mt-10 xs:mt-10 xxs:mt-10">
       <PostMaker user={user}></PostMaker>
       {/* ----------------- */}
+      {pathname === "/" && posts?.length === 0 && (
+        <p className="text-center mt-20 text-2xl">Follow people to see their posts on your feed</p>
+      )}
       {posts?.map((post: any) => (
         <PostPaper key={post._id} post={post}></PostPaper>
       ))}

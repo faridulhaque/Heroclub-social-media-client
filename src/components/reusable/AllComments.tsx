@@ -19,10 +19,12 @@ const AllComments = ({ postId }: any) => {
     console.log(commentsError);
   }
 
+  console.log(comments)
+
   return (
     <div className="w-full h-auto">
       <hr />
-      {comments.map((comment: any) => (
+      {comments.slice(0, 4).map((comment: any) => (
         <>
           <CommentGroup comment={comment}></CommentGroup>
           <hr />
